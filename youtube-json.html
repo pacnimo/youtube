@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Funny Videos App</title>
+  <script src="https://www.youtube.com/iframe_api"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <style>
+  body {
+  font-family: sans-serif;
+  background-color: #f7f7f7;
+  margin: 0;
+  padding: 0;
+}
+
+#video-container {
+  margin: 0 auto;
+  padding: 0;
+  width: 1080px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px #000000;
+  background-color: #ffffff;
+}
+
+h1 {
+  font-size: 3rem;
+  color: #000000;
+  text-align: center;
+  font-weight: 700;
+  margin-top: 20px;
+}
+
+.video {
+  float: left;
+  margin: 0 10px;
+}
+
+iframe {
+  display: block;
+  width: 680px;
+  height: 460px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #000000;
+}
+  </style>
+</head>
+<body>
+
+  <h1>Funny Videos App</h1>
+  
+  <div id="video-container">
+  </div>
+
+  <script>
+    // Get latest and most viewed videos from YouTube
+    $.getJSON('https://www.googleapis.com/youtube/v3/videos?part=snippet&type=video&chart=mostPopular&maxResults=1&videoCategoryID=10&key=set-api-key',
+    function(data) {
+      // For each of the videos returned
+      $.each(data.items, function(i, item) {
+        // Create a new <div> to hold the videos
+        var video_container = document.getElementById('video-container');
+        var video_div = document.createElement('div');
+        video_div.className = 'video';
+        video_div.id = item.id;
+        video_container.appendChild(video_div);
+
+        // Create a <iframe> for the videos
+        var video_frame = document.createElement('iframe');
+        video_frame.width = '680';
+        video_frame.height = '460';
+        video_frame.src = 'https://www.youtube.com/embed/' + item.id;
+        video_div.appendChild(video_frame);
+      });
+    });
+  </script>
+
+</body>
+</html>
